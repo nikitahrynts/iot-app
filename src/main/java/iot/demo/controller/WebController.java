@@ -13,6 +13,8 @@ import java.util.List;
 @RequestMapping("/")
 public class WebController {
 
+    String redisPass = "Hrynts100";
+
     @Autowired
     private RedisUtil util;
 
@@ -23,6 +25,7 @@ public class WebController {
         List<String>  retrieveMap=null;
         jedisPool = util.getJedisPool();
         try (Jedis jedis = jedisPool.getResource()) {
+            jedis.auth(redisPass);
            String key=getListKey(sensorData.getSensorType(),sensorData.getSensorLocation());
            retrieveMap = jedis.lrange(key, 0, reqData);
         }
